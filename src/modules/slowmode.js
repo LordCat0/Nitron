@@ -1,5 +1,5 @@
 const { PermissionsBitField } = require('discord.js');
-const config = require('../../config');
+const config = process.env;
 
 const slowmode = async (interaction) => {
   const modRole = await interaction.guild.roles.fetch(config.modRoleId);

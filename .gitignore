@@ -3,6 +3,7 @@ node_modules
 
 # secret config strings
 config.js
+config.env
 
 # database files
 *.db*

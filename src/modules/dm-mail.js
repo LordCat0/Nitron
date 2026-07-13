@@ -1,6 +1,6 @@
 const { DMChannel, MessageFlags } = require('discord.js');
 const client = require('../client.js');
-const { modChannelId } = require('../../config.js');
+const modChannelId = process.env.modChannelId
 
 /** @type {Map<number, number>} User ID to mute end in unix milliseconds */
 const mutes = new Map();

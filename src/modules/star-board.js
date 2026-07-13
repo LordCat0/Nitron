@@ -1,7 +1,7 @@
 const {PermissionsBitField, MessageType, DMChannel} = require('discord.js');
 const client = require('../client');
 const db = require('../db');
-const config = require('../../config');
+const config = process.env;
 
 const isPublicChannel = (channel) => {
     if (channel instanceof DMChannel) return false;

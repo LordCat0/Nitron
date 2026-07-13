@@ -1,5 +1,5 @@
 const {MessageFlags} = require('discord.js');
-const config = require('../../config');
+const config = process.env;
 
 const checkPreconditions = async (interaction) => {
     if (!interaction.channel) {

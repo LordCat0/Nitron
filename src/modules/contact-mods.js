@@ -4,7 +4,7 @@ const {
   MessageFlags
 } = require('discord.js');
 const client = require('../client');
-const config = require('../../config');
+const config = process.env;
 
 const doesTicketExist = (tickets, userId) => {
   return tickets.threads.some(thread => thread.name.endsWith(userId));
