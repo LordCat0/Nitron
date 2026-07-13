@@ -10,14 +10,14 @@ const client = require('../client');
 const config = process.env;
 
 const editedMessage = async (oldMessage, newMessage) => {
-  const logChannel = await client.channels.fetch(process.env.logChannelId);
+  const logChannel = await client.channels.fetch(config.logChannelId);
 
   if (
     newMessage.channel instanceof DMChannel ||
-    newMessage.channel.id === process.env.modChannelId ||
-    newMessage.channel.id === process.env.adminChannelId ||
-    newMessage.channel.id === process.env.logChannelId ||
-    newMessage.channel.id === process.env.starboardChannelId ||
+    newMessage.channel.id === config.modChannelId ||
+    newMessage.channel.id === config.adminChannelId ||
+    newMessage.channel.id === config.logChannelId ||
+    newMessage.channel.id === config.starboardChannelId ||
     oldMessage.partial ||
     (!oldMessage.content && !oldMessage.attachments) ||
     oldMessage.author.bot ||
@@ -72,15 +72,15 @@ const editedMessage = async (oldMessage, newMessage) => {
 };
 
 const deletedMessage = async (message) => {
-  const logChannel = await client.channels.fetch(process.env.logChannelId);
+  const logChannel = await client.channels.fetch(config.logChannelId);
 
   if (
     message.partial ||
     message.channel instanceof DMChannel ||
-    message.channel.id === process.env.modChannelId ||
-    message.channel.id === process.env.adminChannelId ||
-    message.channel.id === process.env.logChannelId ||
-    message.channel.id === process.env.starboardChannelId
+    message.channel.id === config.modChannelId ||
+    message.channel.id === config.adminChannelId ||
+    message.channel.id === config.logChannelId ||
+    message.channel.id === config.starboardChannelId
   ) {
     return;
   }
@@ -161,7 +161,7 @@ const deletedMessage = async (message) => {
 };
 
 const onReactionRemove = async (reaction, user) => {
-  const logChannel = await client.channels.fetch(process.env.logChannelId);
+  const logChannel = await client.channels.fetch(config.logChannelId);
   await reaction.fetch();
 
   let log = {
@@ -185,7 +185,7 @@ const onReactionRemove = async (reaction, user) => {
 }
 
 const onReactionRemovedByModerator = async (reaction) => {
-  const logChannel = await client.channels.fetch(process.env.logChannelId);
+  const logChannel = await client.channels.fetch(config.logChannelId);
   await reaction.fetch();
 
   let log = {
@@ -209,7 +209,7 @@ const onReactionRemovedByModerator = async (reaction) => {
 }
 
 const onAllReactionsRemovedByModerator = async (message) => {
-  const logChannel = await client.channels.fetch(process.env.logChannelId);
+  const logChannel = await client.channels.fetch(config.logChannelId);
   await message.fetch();
 
   let log = {
@@ -221,7 +221,7 @@ const onAllReactionsRemovedByModerator = async (message) => {
 }
 
 const purgedMessages = async (messages, channelUrl) => {
-  const logChannel = await client.channels.fetch(process.env.logChannelId);
+  const logChannel = await client.channels.fetch(config.logChannelId);
 
   let deletedMessages = '';
   messages.reverse().forEach(message => {
@@ -247,7 +247,7 @@ const purgedMessages = async (messages, channelUrl) => {
 }
 
 const voiceChat = async (oldState, newState) => {
-  const logChannel = await client.channels.fetch(process.env.logChannelId);
+  const logChannel = await client.channels.fetch(config.logChannelId);
 
   let log = {
     allowedMentions: { parse: [] }
@@ -285,7 +285,7 @@ const voiceChat = async (oldState, newState) => {
 }
 
 const userJoin = async (member,oldInvites) => {
-  const logChannel = await client.channels.fetch(process.env.logChannelId);
+  const logChannel = await client.channels.fetch(config.logChannelId);
 
   member.guild.invites.fetch().then(newInvites => {
     const matchingInvites = [...newInvites.values()].filter(i => {
@@ -317,7 +317,7 @@ const userJoin = async (member,oldInvites) => {
 };
 
 const userLeave = async (member) => {
-  const logChannel = await client.channels.fetch(process.env.logChannelId);
+  const logChannel = await client.channels.fetch(config.logChannelId);
 
   await logChannel.send({
     content: `👤 <@${member.user.id}> left the server`,
@@ -370,7 +370,7 @@ const auditLogs = async (auditLog) => {
   }
 
   if (importantLog) {
-    const channel = await client.channels.fetch(process.env.modChannelId);
+    const channel = await client.channels.fetch(config.modChannelId);
     await channel.send({
       content: importantLog,
       allowedMentions: {
@@ -380,7 +380,7 @@ const auditLogs = async (auditLog) => {
   }
 
   if (unimportantLog) {
-    const channel = await client.channels.fetch(process.env.logChannelId);
+    const channel = await client.channels.fetch(config.logChannelId);
     await channel.send({
       content: unimportantLog,
       allowedMentions: {
@@ -389,8 +389,8 @@ const auditLogs = async (auditLog) => {
     });
   }
 
-  if (webhookLog && process.env.majorOffensesSignalingService) {
-    await fetch(process.env.majorOffensesSignalingService, {
+  if (webhookLog && config.majorOffensesSignalingService) {
+    await fetch(config.majorOffensesSignalingService, {
       method: 'POST',
       headers: {
         'content-type': 'application/json'
